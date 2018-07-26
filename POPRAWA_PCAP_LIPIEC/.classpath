@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Java Work Folder/jnetpcap-1.4.r1425/jnetpcap.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wiktor/GIT/PCAP_JSON_TEST/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wiktor/GIT/PCAP_JSON_TEST/jackson-annotations-2.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wiktor/GIT/PCAP_JSON_TEST/jackson-core-2.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wiktor/GIT/PCAP_JSON_TEST/jackson-databind-2.9.5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

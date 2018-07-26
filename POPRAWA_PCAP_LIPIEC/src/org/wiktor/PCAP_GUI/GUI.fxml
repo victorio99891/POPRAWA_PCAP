@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<Pane fx:id="paneBCK" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.wiktor.PCAP_GUI_controllers.GUI_Controller">
+   <children>
+      <Button fx:id="inputFileButton" layoutX="35.0" layoutY="107.0" mnemonicParsing="false" onAction="#chooseFileToInput" prefHeight="31.0" prefWidth="146.0" text="Choose input file:">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="outputFileButton" layoutX="36.0" layoutY="157.0" mnemonicParsing="false" onAction="#chooseFileToOutput" prefHeight="31.0" prefWidth="153.0" text="Choose output file:">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="closeAppButton" layoutX="476.0" layoutY="430.0" mnemonicParsing="false" onAction="#closeApp" prefHeight="43.0" prefWidth="101.0" text="Close App">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="generateButton" disable="true" layoutX="180.0" layoutY="336.0" mnemonicParsing="false" onAction="#generateReport" prefHeight="49.0" prefWidth="234.0" text="Generate Report">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Text fill="#0900ffa7" layoutX="85.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt;PCAPStatManager&lt;" textAlignment="CENTER" wrappingWidth="424.93359375">
+         <font>
+            <Font name="Verdana Bold" size="35.0" />
+         </font>
+      </Text>
+      <Label layoutX="38.0" layoutY="213.0" prefHeight="25.0" prefWidth="197.0" text="Delay of loading packets:" />
+      <TextField fx:id="delayInput" alignment="CENTER_RIGHT" layoutX="219.0" layoutY="210.0" prefHeight="31.0" prefWidth="211.0" promptText="Type number! (ex. 3.15)">
+         <tooltip>
+            <Tooltip text="You should type seconds - ex. 5.12 [dot separated] (Packets operations at this time will be omitted)">
+               <font>
+                  <Font size="11.0" />
+               </font></Tooltip>
+         </tooltip>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></TextField>
+      <Label layoutX="435.0" layoutY="215.0" text="sec." />
+      <Label fx:id="delayInputLabel" alignment="CENTER" layoutX="219.0" layoutY="247.0" prefHeight="21.0" prefWidth="211.0" />
+      <Button fx:id="checkDelayButton" layoutX="286.0" layoutY="275.0" mnemonicParsing="false" onAction="#checkCorrectInput" prefHeight="31.0" prefWidth="273.0" text="Check all!">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Label layoutX="15.0" layoutY="451.0" text="2018 © PCAPStatManager developed by Wiktor Krzyżanowski" textFill="#979595">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <Label layoutX="17.0" layoutY="113.0" text="1.">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="163.0" text="2.">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="216.0" text="3.">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="17.0" layoutY="281.0" text="4.">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="inputFileLabel" editable="false" layoutX="200.0" layoutY="107.0" prefHeight="31.0" prefWidth="377.0" promptText="Input *.txt file." />
+      <TextField fx:id="outputFileLabel" editable="false" layoutX="200.0" layoutY="157.0" prefHeight="31.0" prefWidth="377.0" promptText="Output *.txt file." />
+      <Separator layoutX="12.0" layoutY="76.0" prefHeight="17.0" prefWidth="565.0" />
+      <Separator layoutX="12.0" layoutY="14.0" prefHeight="17.0" prefWidth="565.0" />
+      <Label fx:id="raportGenerateLabel" alignment="CENTER" layoutX="82.0" layoutY="401.0" prefHeight="21.0" prefWidth="432.0" textFill="#30ab00">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="restartButton" layoutX="435.0" layoutY="336.0" mnemonicParsing="false" onAction="#restartAll" prefHeight="49.0" prefWidth="116.0" text="Restart!" visible="false" />
+      <Label layoutX="35.0" layoutY="278.0" prefHeight="25.0" prefWidth="245.0" text="Check all before generating report:" />
+   </children>
+</Pane>
