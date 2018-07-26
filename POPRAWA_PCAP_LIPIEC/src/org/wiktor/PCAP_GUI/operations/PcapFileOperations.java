@@ -93,7 +93,8 @@ public class PcapFileOperations {
 					inputTime = 0L;
 					packet_payload = 0;
 					frame_number++;
-					System.out.println("\n===========================================================================================================================================\n");
+					System.out.println(
+							"\n===========================================================================================================================================\n");
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -132,7 +133,7 @@ public class PcapFileOperations {
 
 			Long inputTime = 0L;
 			ArrayList<String> eventArray = new ArrayList<String>();
-			ArrayList<Long> pes_timings = new ArrayList<Long>();
+			ArrayList<Long> dts_timings = new ArrayList<Long>();
 
 			int frame_number = 2;
 
@@ -160,31 +161,32 @@ public class PcapFileOperations {
 					Long timing = Long.valueOf(numbers);
 
 					eventArray.add("(DTS)");
-					pes_timings.add(timing);
+					dts_timings.add(timing);
 
 					System.out.println("(DTS) PES time: " + timing);
 				}
 
 				if (line.contains("ISO/IEC 13818-1")) {
 					eventArray.add("MP2T");
-					//System.out.println("MP2T");
+					// System.out.println("MP2T");
 				}
 
 				if (line.contains("Frame " + frame_number + ":") || i == (lines - 1)) {
 
 					@SuppressWarnings("unchecked")
 					OutputPacket current_packet = new OutputPacket(inputTime, (ArrayList<String>) eventArray.clone(),
-							(ArrayList<Long>) pes_timings.clone());
+							(ArrayList<Long>) dts_timings.clone());
 					System.out.println(current_packet.toString());
 
 					temporary_list.add(current_packet);
 
 					inputTime = 0L;
 					eventArray.clear();
-					pes_timings.clear();
+					dts_timings.clear();
 
 					frame_number++;
-					System.out.println("\n===========================================================================================================================================\n");
+					System.out.println(
+							"\n===========================================================================================================================================\n");
 				}
 
 			}
@@ -211,7 +213,10 @@ public class PcapFileOperations {
 	public ArrayList<Long> make_timings_array_out(ArrayList<OutputPacket> output_packet_array) {
 		ArrayList<Long> temporary = new ArrayList<Long>();
 		for (int i = 0; i < output_packet_array.size(); i++) {
-			temporary.add(output_packet_array.get(i).getInputTime());
+			for (int k = 0; k < output_packet_array.get(i).getDTS_timings().size(); k++) {
+				temporary.add(output_packet_array.get(i).getDTS_timings().get(k));
+			}
+
 		}
 		return temporary;
 	}

@@ -184,6 +184,12 @@ public class GUI_Controller {
 
 		System.out.println("DELAY in nanos: " + delay);
 
+		System.out.println("BEFORE:\nINPUT TIME: " + input_time_array.size());
+		System.out.println("INPUT DATA: " + input_packet_array.size());
+		System.out.println("OUTPUT TIME: " + dts_time_array.size());
+		System.out.println("OUTPUT DATA: " + output_packet_array.size());
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+
 		for (int i = 0; i < input_time_array.size(); i++) {
 			if (input_time_array.get(i) < delay) {
 				input_time_array.remove(input_time_array.get(i));
@@ -203,10 +209,13 @@ public class GUI_Controller {
 				i--;
 			}
 		}
-		 
 		
-		
+		System.out.println(input_time_array);
+		System.out.println(dts_time_array);
 
+		for (int i = 0; i < input_time_array.size(); i++) {
+
+		}
 
 		try {
 			new Report().createReport(pcapfile_input.getFileName(), pcapfile_output.getFileName(), input_packet_size,
@@ -219,6 +228,12 @@ public class GUI_Controller {
 			raportGenerateLabel.setText("Nieoczekiwany b³¹d!");
 			System.exit(0);
 		}
+
+		System.out.println("AFTER:\nINPUT TIME: " + input_time_array.size());
+		System.out.println("INPUT DATA: " + input_packet_array.size());
+		System.out.println("OUTPUT TIME: " + dts_time_array.size());
+		System.out.println("OUTPUT DATA: " + output_packet_array.size());
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
 
 		try {
 			Desktop.getDesktop().open(new File("PCAP_REPORTS"));
