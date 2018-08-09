@@ -18,6 +18,10 @@ public class OutputPacket {
 	private ArrayList<String> eventArray = new ArrayList<String>();
 	private ArrayList<Long> dts_timings = new ArrayList<Long>();
 
+	public OutputPacket() {
+
+	}
+
 	public OutputPacket(Long inputTime, ArrayList<String> eventArray, ArrayList<Long> pes_timings) {
 		this.inputTime = inputTime;
 		this.eventArray = eventArray;
@@ -29,7 +33,6 @@ public class OutputPacket {
 		return "OutputPacket [inputTime=" + inputTime + ", eventArray=" + eventArray + ", dts_timings=" + dts_timings
 				+ "]";
 	}
-
 
 	public int getDATA_SIZE() {
 		return DATA_SIZE;

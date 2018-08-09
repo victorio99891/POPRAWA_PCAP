@@ -9,6 +9,10 @@ public class InputPacket {
 	private long input_time;
 	private int tcp_payload_data;
 
+	public InputPacket() {
+
+	}
+
 	public InputPacket(Long packet_time, int tcp_payload_data) {
 		this.input_time = packet_time;
 		this.tcp_payload_data = tcp_payload_data;

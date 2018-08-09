@@ -209,11 +209,44 @@ public class GUI_Controller {
 				i--;
 			}
 		}
-		
+
 		System.out.println(input_time_array);
 		System.out.println(dts_time_array);
 
-		for (int i = 0; i < input_time_array.size(); i++) {
+		int bigger_list_size;
+
+		if (input_time_array.size() < dts_time_array.size()) {
+			bigger_list_size = input_time_array.size();
+		} else {
+			bigger_list_size = dts_time_array.size();
+		}
+
+		for (int i = 0; i < bigger_list_size; i++) {
+
+			InputPacket input_packet = new InputPacket();
+			OutputPacket output_packet = new OutputPacket();
+
+			if (!input_packet_array.isEmpty()) {
+				input_packet = input_packet_array.get(i);
+			}
+
+			if (!output_packet_array.isEmpty()) {
+				output_packet = output_packet_array.get(i);
+			}
+
+			if (!input_packet_array.isEmpty() && !output_packet_array.isEmpty()) {
+
+				/*ADD DATA TO BUFOR WHEN INPUT TIME IS SMALLER THAN DTS TIME (OUTPUT)*/
+
+				if (!output_packet.getDTS_timings().isEmpty()) {
+
+					bufor.addData(input_packet.getTcp_payload_data());
+
+				} else if (output_packet.getDTS_timings().isEmpty()) {
+					bufor.subtractData(7 * 188);
+				}
+
+			}
 
 		}
 
