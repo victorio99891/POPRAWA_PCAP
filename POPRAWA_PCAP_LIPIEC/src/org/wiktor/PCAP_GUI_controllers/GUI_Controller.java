@@ -4,14 +4,11 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.wiktor.PCAP_GUI.operations.Bufor;
 import org.wiktor.PCAP_GUI.operations.InputPacket;
 import org.wiktor.PCAP_GUI.operations.OutputPacket;
 import org.wiktor.PCAP_GUI.operations.PcapFileOperations;
 import org.wiktor.PCAP_GUI.operations.Report;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -37,7 +34,6 @@ public class GUI_Controller {
 	PcapFileOperations pcapfile_input = new PcapFileOperations();
 	PcapFileOperations pcapfile_output = new PcapFileOperations();
 
-	ArrayList<Long> control_array = new ArrayList<Long>();
 	ArrayList<Long> input_time_array;
 	ArrayList<Long> dts_time_array;
 	ArrayList<InputPacket> input_packet_array;
@@ -96,8 +92,8 @@ public class GUI_Controller {
 				input_packet_size += input_packet_array.get(i).getTcp_payload_data();
 			}
 
-			System.out.println("Output ARRAY: " + input_packet_array);
-			System.out.println("Output packets size: " + input_packet_size + " KB");
+			/*System.out.println("Input ARRAY: " + input_packet_array);*/
+			System.out.println("Input packets size: " + input_packet_size + " KB");
 
 		} catch (Exception e) {
 
@@ -118,11 +114,11 @@ public class GUI_Controller {
 			dts_time_array = pcapfile_output.make_timings_array_out(output_packet_array);
 			output_packet_size = 0;
 
-			for (int i = 0; i < input_time_array.size(); i++) {
+			for (int i = 0; i < output_packet_array.size(); i++) {
 				output_packet_size += output_packet_array.get(i).getDATA_SIZE();
 			}
 
-			System.out.println("Output ARRAY: " + output_packet_array);
+			/*System.out.println("Output ARRAY: " + output_packet_array);*/
 			System.out.println("Output packets size: " + output_packet_size + " KB");
 
 		} catch (Exception e) {
@@ -184,68 +180,148 @@ public class GUI_Controller {
 
 		System.out.println("DELAY in nanos: " + delay);
 
-		System.out.println("BEFORE:\nINPUT TIME: " + input_time_array.size());
+		/*System.out.println("BEFORE:\n");
 		System.out.println("INPUT DATA: " + input_packet_array.size());
-		System.out.println("OUTPUT TIME: " + dts_time_array.size());
-		System.out.println("OUTPUT DATA: " + output_packet_array.size());
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("OUTPUT DATA: " + output_packet_array.size());*/
 
-		for (int i = 0; i < input_time_array.size(); i++) {
-			if (input_time_array.get(i) < delay) {
-				input_time_array.remove(input_time_array.get(i));
-			}
+		// DELAY START
+
+		for (int i = 0; i < input_packet_array.size(); i++) {
 			if (input_packet_array.get(i).getInputTime() < delay) {
 				input_packet_array.remove(input_packet_array.get(i));
 				i--;
 			}
 		}
 
-		for (int i = 0; i < dts_time_array.size(); i++) {
-			if (dts_time_array.get(i) < delay) {
-				dts_time_array.remove(dts_time_array.get(i));
-			}
+		for (int i = 0; i < output_packet_array.size(); i++) {
 			if (output_packet_array.get(i).getInputTime() < delay) {
 				output_packet_array.remove(output_packet_array.get(i));
 				i--;
 			}
 		}
 
-		System.out.println(input_time_array);
-		System.out.println(dts_time_array);
+		// DELAY STOP
 
-		int bigger_list_size;
+		// CHECK HOW MANY DTS
+		int DTS_count = 0;
 
-		if (input_time_array.size() < dts_time_array.size()) {
-			bigger_list_size = input_time_array.size();
-		} else {
-			bigger_list_size = dts_time_array.size();
+		for (int i = 0; i < output_packet_array.size(); i++) {
+			DTS_count = DTS_count + output_packet_array.get(i).getDTS_timings().size();
 		}
 
-		for (int i = 0; i < bigger_list_size; i++) {
+		int MP2T_WITHDRAW_CUMULATIONS = 0;
+
+		for (int i = 0; i < 1; i++) {
 
 			InputPacket input_packet = new InputPacket();
 			OutputPacket output_packet = new OutputPacket();
 
 			if (!input_packet_array.isEmpty()) {
-				input_packet = input_packet_array.get(i);
+				input_packet = input_packet_array.get(0);
 			}
 
 			if (!output_packet_array.isEmpty()) {
-				output_packet = output_packet_array.get(i);
+				output_packet = output_packet_array.get(0);
+
 			}
 
 			if (!input_packet_array.isEmpty() && !output_packet_array.isEmpty()) {
 
-				/*ADD DATA TO BUFOR WHEN INPUT TIME IS SMALLER THAN DTS TIME (OUTPUT)*/
+				if (output_packet.getDTS_timings().isEmpty()) {
+					// ITERACJA KUMULACJI!
+					MP2T_WITHDRAW_CUMULATIONS = MP2T_WITHDRAW_CUMULATIONS + 7;
+					output_packet_array.remove(0);
+					i--;
 
-				if (!output_packet.getDTS_timings().isEmpty()) {
+				} else if (!output_packet_array.get(i).getDTS_timings().isEmpty()) {
+					// DTS JEST
 
-					bufor.addData(input_packet.getTcp_payload_data());
+					if ((input_packet.getInputTime() < output_packet.getDTS_timings().get(0))) {
+						// DODANIE DO BUFORA Z INPUT PACKET
+						bufor.addData(input_packet.getTcp_payload_data());
+						input_packet_array.remove(0);
+						i--;
 
-				} else if (output_packet.getDTS_timings().isEmpty()) {
-					bufor.subtractData(7 * 188);
+					} else if ((input_packet.getInputTime() > output_packet.getDTS_timings().get(0))) {
+						// OPERACJE NA DTS
+
+						for (int j = 0; j < 1; j++) {
+
+							if (output_packet.getEventArray().get(j).equals("(DTS)") && (j == 0)) {
+
+								bufor.subtractData(188 * (MP2T_WITHDRAW_CUMULATIONS));
+
+								MP2T_WITHDRAW_CUMULATIONS = 0;
+								output_packet.getEventArray().remove(0);
+
+								bufor.checkBufferStatus(output_packet.getDTS_timings().get(0));
+
+								output_packet.getDTS_timings().remove(0);
+								j--;
+
+							} else if (output_packet.getEventArray().get(j).equals("MP2T") && (j == 0)) {
+								MP2T_WITHDRAW_CUMULATIONS++;
+								output_packet.getEventArray().remove(0);
+								j--;
+							}
+
+							if (output_packet.getEventArray().isEmpty()) {
+								output_packet_array.remove(0);
+								break;
+							}
+
+						}
+
+						i--;
+
+					}
+
 				}
 
+			}
+
+		}
+
+		if (!input_packet_array.isEmpty() && output_packet_array.isEmpty()) {
+			for (int j = 0; j < input_packet_array.size(); j++) {
+				bufor.addData(input_packet_array.get(j).getTcp_payload_data());
+			}
+		}
+
+		if (input_packet_array.isEmpty() && !output_packet_array.isEmpty()) {
+
+			for (int i = 0; i < output_packet_array.size(); i++) {
+				if (output_packet_array.get(i).getDTS_timings().isEmpty()) {
+					MP2T_WITHDRAW_CUMULATIONS = MP2T_WITHDRAW_CUMULATIONS + 7;
+
+				} else if (!output_packet_array.get(i).getDTS_timings().isEmpty()) {
+					for (int j = 0; j < 1; j++) {
+
+						if (output_packet_array.get(i).getEventArray().get(j).equals("(DTS)") && (j == 0)) {
+
+							bufor.subtractData(188 * (MP2T_WITHDRAW_CUMULATIONS));
+
+							MP2T_WITHDRAW_CUMULATIONS = 0;
+							output_packet_array.get(i).getEventArray().remove(0);
+
+							bufor.checkBufferStatus(output_packet_array.get(i).getDTS_timings().get(0));
+
+							output_packet_array.get(i).getDTS_timings().remove(0);
+							j--;
+
+						} else if (output_packet_array.get(i).getEventArray().get(j).equals("MP2T") && (j == 0)) {
+							MP2T_WITHDRAW_CUMULATIONS++;
+							output_packet_array.get(i).getEventArray().remove(0);
+							j--;
+						}
+
+						if (output_packet_array.get(i).getEventArray().isEmpty()) {
+
+							break;
+						}
+
+					}
+				}
 			}
 
 		}
@@ -262,11 +338,10 @@ public class GUI_Controller {
 			System.exit(0);
 		}
 
-		System.out.println("AFTER:\nINPUT TIME: " + input_time_array.size());
+		/*System.out.println("\nAFTER:");
 		System.out.println("INPUT DATA: " + input_packet_array.size());
-		System.out.println("OUTPUT TIME: " + dts_time_array.size());
 		System.out.println("OUTPUT DATA: " + output_packet_array.size());
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("DTS COUNT: " + DTS_count);*/
 
 		try {
 			Desktop.getDesktop().open(new File("PCAP_REPORTS"));
@@ -279,7 +354,6 @@ public class GUI_Controller {
 		checkDelayButton.setDisable(true);
 		generateButton.setDisable(true);
 		restartButton.setVisible(true);
-
 	}
 
 	@FXML
@@ -299,7 +373,6 @@ public class GUI_Controller {
 		delayInput.setDisable(false);
 		delayInputLabel.setText("");
 		raportGenerateLabel.setText("");
-		control_array.clear();
 		input_time_array.clear();
 		dts_time_array.clear();
 		input_packet_size = 0;

@@ -12,6 +12,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Java Work Folder/jnetpcap-1.4.r1425/jnetpcap.jar"/>
-	<classpathentry kind="lib" path="C:/Users/admin/Downloads/commons-lang-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

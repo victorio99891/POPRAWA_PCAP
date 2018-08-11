@@ -69,14 +69,14 @@ public class PcapFileOperations {
 
 				if (line.contains("[Time since reference or first frame:")) {
 
-					System.out.println("Frame " + (frame_number - 1) + ":");
+					// System.out.println("Frame " + (frame_number - 1) + ":");
 
 					String numbers = null;
 					numbers = line.replaceAll("[^0-9]", "");
 
 					inputTime = Long.valueOf(numbers);
 
-					System.out.println("Input time: " + inputTime);
+					// System.out.println("Input time: " + inputTime);
 
 				}
 
@@ -88,13 +88,13 @@ public class PcapFileOperations {
 
 				if (line.contains("Frame " + frame_number + ":") || i == (lines - 1)) {
 					InputPacket current_packet = new InputPacket(inputTime, packet_payload);
-					System.out.println(current_packet.toString());
+					// System.out.println(current_packet.toString());
 					temporary_list.add(current_packet);
 					inputTime = 0L;
 					packet_payload = 0;
 					frame_number++;
-					System.out.println(
-							"\n===========================================================================================================================================\n");
+					// System.out.println(
+					// "\n===========================================================================================================================================\n");
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -143,14 +143,14 @@ public class PcapFileOperations {
 
 				if (line.contains("[Time since reference or first frame:")) {
 
-					System.out.println("Frame " + (frame_number - 1) + ":");
+					// System.out.println("Frame " + (frame_number - 1) + ":");
 
 					String numbers = null;
 					numbers = line.replaceAll("[^0-9]", "");
 
 					inputTime = Long.valueOf(numbers);
 
-					System.out.println("Input time: " + inputTime);
+					// System.out.println("Input time: " + inputTime);
 
 				}
 
@@ -163,7 +163,7 @@ public class PcapFileOperations {
 					eventArray.add("(DTS)");
 					dts_timings.add(timing);
 
-					System.out.println("(DTS) PES time: " + timing);
+					// System.out.println("(DTS) PES time: " + timing);
 				}
 
 				if (line.contains("ISO/IEC 13818-1")) {
@@ -176,7 +176,7 @@ public class PcapFileOperations {
 					@SuppressWarnings("unchecked")
 					OutputPacket current_packet = new OutputPacket(inputTime, (ArrayList<String>) eventArray.clone(),
 							(ArrayList<Long>) dts_timings.clone());
-					System.out.println(current_packet.toString());
+					// System.out.println(current_packet.toString());
 
 					temporary_list.add(current_packet);
 
@@ -185,8 +185,8 @@ public class PcapFileOperations {
 					dts_timings.clear();
 
 					frame_number++;
-					System.out.println(
-							"\n===========================================================================================================================================\n");
+					// System.out.println(
+					// "\n===========================================================================================================================================\n");
 				}
 
 			}
