@@ -10,6 +10,8 @@ public class Main extends Application {
 	
 	/* OPEN APPLICATION WINDOW */
 
+	// To jest commit z InteliJ IDEA
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
